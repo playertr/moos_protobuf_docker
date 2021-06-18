@@ -18,6 +18,10 @@ ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
 
 # TODO: Also python moos directories?
 
+
+# We also use the tf2 library
+RUN apt install -y libeigen3-dev libtf2-dev libtf2-eigen-dev
+
 # Our test repo
 RUN apt install -y libboost-all-dev
 RUN git clone https://github.com/lindzey/moos_experiments.git
