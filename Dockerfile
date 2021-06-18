@@ -5,6 +5,8 @@ USER root
 WORKDIR /home/moos
 ENV MOOS_DIR=/home/moos/moos-ivp/build/MOOS/MOOSCore
 
+# Builts were failing with "Unable to fetch some archives, maybe run apt-get update or try with --fix-missing"
+RUN apt update
 
 # We also use the tf2 library
 RUN apt install -y libeigen3-dev 
