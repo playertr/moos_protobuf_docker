@@ -8,6 +8,11 @@ ENV MOOS_DIR=/home/moos/moos-ivp/build/MOOS/MOOSCore
 # Builts were failing with "Unable to fetch some archives, maybe run apt-get update or try with --fix-missing"
 RUN apt update
 
+# Pyproj. From source for now because 18.04 doesn't have the right version in the debs.
+RUN apt install -y git cmake make g++ libtiff-dev sqlite3 libsqlite3-dev libcurl4-gnutls-dev
+RUN git clone https://github.com/OSGeo/PROJ.git
+RUN cd PROJ && mkdir build && cd build && cmake .. && make && make install
+
 # We also use the tf2 library
 RUN apt install -y libeigen3-dev 
 RUN apt install -y libtf2-dev 
@@ -30,9 +35,6 @@ RUN cd protobuf && git submodule update --init --recursive && ./autogen.sh
 #RUN cd protobuf && ./configure && make && make check && make install && ldconfig
 RUN cd protobuf && ./configure && make && make install && ldconfig
 ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
-
-# TODO: Also python moos directories?
-
 
 # Our test repo
 RUN apt install -y libboost-all-dev
