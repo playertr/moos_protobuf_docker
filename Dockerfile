@@ -5,8 +5,17 @@ USER root
 WORKDIR /home/moos
 ENV MOOS_DIR=/home/moos/moos-ivp/build/MOOS/MOOSCore
 
+
+# We also use the tf2 library
+RUN apt install -y libeigen3-dev 
+RUN apt install libtf2-dev 
+RUN apt install libtf2-eigen-dev
+
+
+
 RUN apt install -y git
-# Protobuf dependencies
+
+# Protobuf dependencies; do protobuf last because it's so slow.
 RUN apt install -y autoconf automake libtool curl make g++ unzip
 
 RUN git clone https://github.com/protocolbuffers/protobuf.git
@@ -18,9 +27,6 @@ ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
 
 # TODO: Also python moos directories?
 
-
-# We also use the tf2 library
-RUN apt install -y libeigen3-dev libtf2-dev libtf2-eigen-dev
 
 # Our test repo
 RUN apt install -y libboost-all-dev
