@@ -7,9 +7,14 @@ ENV MOOS_DIR=/home/moos/moos-ivp/build/MOOS/MOOSCore
 
 # Builts were failing with "Unable to fetch some archives, maybe run apt-get update or try with --fix-missing"
 RUN apt update
+RUN apt install -y git
+
+# g3log
+RUN git clone https://github.com/KjellKod/g3log.git
+RUN cd g3log && mkdir build && cd build && cmake .. && make && make install
 
 # Pyproj. From source for now because 18.04 doesn't have the right version in the debs.
-RUN apt install -y git cmake make g++ libtiff-dev sqlite3 libsqlite3-dev libcurl4-gnutls-dev
+RUN apt install -y cmake make g++ libtiff-dev sqlite3 libsqlite3-dev libcurl4-gnutls-dev
 RUN git clone https://github.com/OSGeo/PROJ.git
 RUN cd PROJ && mkdir build && cd build && cmake .. && make && make install
 
@@ -19,7 +24,6 @@ RUN apt install -y libtf2-dev
 RUN apt install -y libtf2-eigen-dev
 
 # Install pymoos
-RUN apt install -y git
 RUN apt install -y python3
 RUN apt install -y python3-setuptools
 RUN apt install -y python3-dev  
@@ -28,7 +32,6 @@ RUN cd python-moos && python3 setup.py build && python3 setup.py install
 
 # Protobuf dependencies; do protobuf last because it's so slow.
 RUN apt install -y autoconf automake libtool curl make g++ unzip
-
 RUN git clone https://github.com/protocolbuffers/protobuf.git
 RUN cd protobuf && git submodule update --init --recursive && ./autogen.sh
 # For some reason, make check fails when building on hub.docker.com, but not locally.
