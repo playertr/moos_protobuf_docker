@@ -9,6 +9,10 @@ ENV MOOS_DIR=/home/moos/moos-ivp/build/MOOS/MOOSCore
 RUN apt update
 RUN apt install -y git
 
+# google test
+RUN git clone https://github.com/google/googletest.git -b release-1.10.0
+RUN cd googletest && mkdir build && cd build && cmake .. -DBUILD_GMOCK=OFF && make && make install
+
 # g3log
 RUN git clone https://github.com/KjellKod/g3log.git
 RUN cd g3log && mkdir build && cd build && cmake .. && make && make install
