@@ -15,6 +15,7 @@ RUN apt install -y libtf2-eigen-dev
 
 # Install pymoos
 RUN apt install -y git
+RUN apt install -y python3
 RUN git clone https://github.com/msis/python-moos.git
 RUN cd python-moos && python3 setup.py build && python3 setup.py install
 
