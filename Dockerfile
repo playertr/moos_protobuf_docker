@@ -8,12 +8,13 @@ ENV MOOS_DIR=/home/moos/moos-ivp/build/MOOS/MOOSCore
 
 # We also use the tf2 library
 RUN apt install -y libeigen3-dev 
-RUN apt install libtf2-dev 
-RUN apt install libtf2-eigen-dev
+RUN apt install -y libtf2-dev 
+RUN apt install -y libtf2-eigen-dev
 
-
-
+# Install pymoos
 RUN apt install -y git
+RUN git clone https://github.com/msis/python-moos.git
+RUN cd python-moos && python3 setup.py build && python3 setup.py install
 
 # Protobuf dependencies; do protobuf last because it's so slow.
 RUN apt install -y autoconf automake libtool curl make g++ unzip
