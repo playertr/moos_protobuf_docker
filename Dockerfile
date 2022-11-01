@@ -42,7 +42,10 @@ RUN apt-get update && \
     apt-get install -y autoconf automake libtool curl make g++ unzip && \
     rm -rf /var/lib/apt/lists/*
 RUN git clone https://github.com/protocolbuffers/protobuf.git
-RUN cd protobuf && git submodule update --init --recursive && ./autogen.sh
+RUN cd protobuf && \
+    git reset --hard 64dd751868d633421563e53e68da831a0a02c923 && \
+    git submodule update --init --recursive && \
+    ./autogen.sh
 # For some reason, make check fails when building on hub.docker.com, but not locally.
 #RUN cd protobuf && ./configure && make && make check && make install && ldconfig
 RUN cd protobuf && ./configure && make && make install && ldconfig
