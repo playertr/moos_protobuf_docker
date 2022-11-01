@@ -19,26 +19,26 @@ RUN git clone https://github.com/KjellKod/g3log.git
 RUN cd g3log && mkdir build && cd build && cmake .. && make && make install
 
 # Pyproj. From source for now because 18.04 doesn't have the right version in the debs.
-RUN RUN apt-get update && \
+RUN apt-get update && \
     apt-get install -y cmake make g++ libtiff-dev sqlite3 libsqlite3-dev libcurl4-gnutls-dev && \
     rm -rf /var/lib/apt/lists/*
 RUN git clone https://github.com/OSGeo/PROJ.git
 RUN cd PROJ && mkdir build && cd build && cmake .. && make && make install
 
 # We also use the tf2 library
-RUN RUN apt-get update && \
+RUN apt-get update && \
     apt-get install -y libeigen3-dev libtf2-dev libtf2-eigen-dev && \
     rm -rf /var/lib/apt/lists/*
 
 # Install pymoos
-RUN RUN apt-get update && \
+RUN apt-get update && \
     apt-get install -y python3 python3-setuptools python3-dev && \
     rm -rf /var/lib/apt/lists/*
 RUN git clone https://github.com/msis/python-moos.git
 RUN cd python-moos && python3 setup.py build && python3 setup.py install
 
 # Protobuf dependencies; do protobuf last because it's so slow.
-RUN RUN apt-get update && \
+RUN apt-get update && \
     apt-get install -y autoconf automake libtool curl make g++ unzip && \
     rm -rf /var/lib/apt/lists/*
 RUN git clone https://github.com/protocolbuffers/protobuf.git
@@ -49,7 +49,7 @@ RUN cd protobuf && ./configure && make && make install && ldconfig
 ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
 
 # Our test repo
-RUN RUN apt-get update && \
+RUN apt-get update && \
     apt-get install -y libboost-all-dev && \
     rm -rf /var/lib/apt/lists/*
 RUN git clone https://github.com/lindzey/moos_experiments.git
