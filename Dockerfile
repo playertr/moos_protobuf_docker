@@ -12,18 +12,18 @@ RUN apt-get update && \
 
 # google test
 RUN git clone https://github.com/google/googletest.git -b release-1.10.0
-RUN cd googletest && mkdir build && cd build && cmake .. -DBUILD_GMOCK=OFF && make && make install
+RUN cd googletest && mkdir build && cd build && cmake .. -DBUILD_GMOCK=OFF && make -j$(nproc) && make install
 
 # g3log
 RUN git clone https://github.com/KjellKod/g3log.git
-RUN cd g3log && mkdir build && cd build && cmake .. && make && make install
+RUN cd g3log && mkdir build && cd build && cmake .. && make -j$(nproc) && make install
 
 # Pyproj. From source for now because 18.04 doesn't have the right version in the debs.
 RUN apt-get update && \
     apt-get install -y cmake make g++ libtiff-dev sqlite3 libsqlite3-dev libcurl4-gnutls-dev && \
     rm -rf /var/lib/apt/lists/*
 RUN git clone https://github.com/OSGeo/PROJ.git
-RUN cd PROJ && mkdir build && cd build && cmake .. && make && make install
+RUN cd PROJ && mkdir build && cd build && cmake .. && make -j$(nproc) && make install
 
 # We also use the tf2 library
 RUN apt-get update && \
@@ -48,7 +48,7 @@ RUN cd protobuf && \
     ./autogen.sh
 # For some reason, make check fails when building on hub.docker.com, but not locally.
 #RUN cd protobuf && ./configure && make && make check && make install && ldconfig
-RUN cd protobuf && ./configure && make && make install && ldconfig
+RUN cd protobuf && ./configure && make -j$(nproc) && make install && ldconfig
 ENV LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib
 
 # Our test repo
@@ -56,5 +56,5 @@ RUN apt-get update && \
     apt-get install -y libboost-all-dev && \
     rm -rf /var/lib/apt/lists/*
 RUN git clone https://github.com/lindzey/moos_experiments.git
-RUN cd moos_experiments && mkdir build && cd build && cmake .. && make && make install
+RUN cd moos_experiments && mkdir build && cd build && cmake .. && make -j$(nproc) && make install
 ENV PATH=${PATH}:/home/moos/moos_experiments/devel/bin
